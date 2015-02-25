@@ -16,6 +16,7 @@ import org.apache.shiro.subject.Subject;
 import org.omnifaces.util.Messages;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
@@ -55,12 +56,17 @@ public class LoginMBean {
             Subject currentUser = SecurityUtils.getSubject();
             log.info("User :" + currentUser.getPrincipal() + "has login");
             log.info("currentUser.isPermitted(\"create\")" + currentUser.isPermitted("create"));
+            return "/system/welcomePrimefaces";
+        } catch (EJBException ejbException) {
+            Exception e = ejbException.getCausedByException();
+            if (e.getClass().getName().equals("AuthenticationException")) {
+                Messages.addFlashGlobalError("登入失敗 ,您輸入的帳號或密碼有誤。");
+            }
         } catch (AuthenticationException e) {
             log.warn(e.getMessage());
             Messages.addFlashGlobalError("登入失敗 ,您輸入的帳號或密碼有誤。");
-            return "/index";
         }
-        return "/system/welcomePrimefaces";
+        return "";
     }
 
 }

@@ -24,7 +24,10 @@ public class SubjectMBean {
     }
 
     public String getId() {
-        return SecurityUtils.getSubject().getPrincipal().toString();
+        if (SecurityUtils.getSubject().isAuthenticated()) {
+            return SecurityUtils.getSubject().getPrincipal().toString();
+        }
+        return "";
     }
 
 }
