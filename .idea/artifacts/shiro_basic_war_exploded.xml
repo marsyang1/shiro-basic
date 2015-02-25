@@ -18,6 +18,18 @@
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.6" />
           <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.14.8" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-faces:2.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: com.atlassian.crowd:crowd-integration-client-rest:2.8.0" />
+          <element id="library" level="project" name="Maven: com.atlassian.crowd:crowd-integration-client-common:2.8.0" />
+          <element id="library" level="project" name="Maven: com.atlassian.security:atlassian-cookie-tools:3.2.4" />
+          <element id="library" level="project" name="Maven: com.atlassian.crowd:crowd-integration-api:2.8.0" />
+          <element id="library" level="project" name="Maven: com.atlassian.crowd:embedded-crowd-api:2.8.0" />
+          <element id="library" level="project" name="Maven: com.google.guava:guava:11.0.2" />
+          <element id="library" level="project" name="Maven: com.google.code.findbugs:jsr305:2.0.3" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.3.2" />
+          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.3.5" />
+          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.3.2" />
+          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.6" />
+          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient-cache:4.3.5" />
         </element>
       </element>
       <element id="directory" name="META-INF">
