@@ -112,5 +112,13 @@
             <name>Deluan's Public Repository</name>
             <url>http://deluan.googlecode.com/svn/releases</url>
         </repository>
+        <repository>
+            <id>deluan.snapshots</id>
+            <name>Deluan's Public Snapshots Repository</name>
+            <url>http://deluan.googlecode.com/svn/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
     </repositories>
 </project>
