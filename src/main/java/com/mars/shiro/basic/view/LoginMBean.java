@@ -56,7 +56,7 @@ public class LoginMBean {
             Subject currentUser = SecurityUtils.getSubject();
             log.info("User :" + currentUser.getPrincipal() + "has login");
             log.info("currentUser.isPermitted(\"create\")" + currentUser.isPermitted("create"));
-            return "/system/welcomePrimefaces";
+            return "/system/secret";
         } catch (EJBException ejbException) {
             Exception e = ejbException.getCausedByException();
             if (e.getClass().getName().equals("AuthenticationException")) {
