@@ -5,6 +5,7 @@
  */
 package com.mars.shiro.basic.view;
 
+import com.mars.shiro.basic.service.BaseAction;
 import com.mars.shiro.basic.service.LoginService;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +27,7 @@ import javax.faces.bean.RequestScoped;
 @Slf4j
 @ManagedBean
 @RequestScoped
-public class LoginMBean {
+public class LoginMBean extends BaseAction {
 
     @EJB
     private LoginService loginService;
@@ -69,4 +70,8 @@ public class LoginMBean {
         return "";
     }
 
+    private void tes()
+    {
+        Subject user = SecurityUtils.getSubject();
+    }
 }
