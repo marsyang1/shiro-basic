@@ -1,5 +1,6 @@
 package com.cy.security.crowd;
 
+import com.atlassian.crowd.integration.http.CrowdHttpAuthenticator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -15,6 +16,10 @@ import org.apache.shiro.subject.PrincipalCollection;
  */
 @Slf4j
 public class CrowdRealm extends AuthorizingRealm {
+
+    private SecurityServerClient crowdClient;
+    private CrowdHttpAuthenticator crowdHttpAuthenticator;
+
 
     public CrowdRealm() {
         super();
