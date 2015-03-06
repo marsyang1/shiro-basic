@@ -54,6 +54,11 @@
         </dependency>
         <dependency>
             <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-cas</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-faces</artifactId>
             <!-- See the latest version on the project's homepage -->
             <version>2.0-SNAPSHOT</version>

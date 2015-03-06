@@ -18,6 +18,10 @@
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.6" />
           <element id="library" level="project" name="Maven: joda-time:joda-time:2.7" />
           <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.14.8" />
+          <element id="library" level="project" name="Maven: org.apache.shiro:shiro-cas:1.2.3" />
+          <element id="library" level="project" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" />
+          <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.1" />
+          <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.3" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-faces:2.0-SNAPSHOT" />
           <element id="library" level="project" name="Maven: com.atlassian.crowd:crowd-integration-client-rest:2.8.0" />
           <element id="library" level="project" name="Maven: com.atlassian.crowd:crowd-integration-client-common:2.8.0" />
