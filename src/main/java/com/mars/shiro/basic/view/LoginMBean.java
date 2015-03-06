@@ -5,14 +5,15 @@
  */
 package com.mars.shiro.basic.view;
 
+import com.cy.security.crowd.CrowdUserToken;
 import com.mars.shiro.basic.service.LoginService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
 import javax.ejb.EJB;
@@ -50,7 +51,8 @@ public class LoginMBean {
     }
 
     public String authenticate() {
-        UsernamePasswordToken token = new UsernamePasswordToken(userId, password, rememberMe);
+        CrowdUserToken token = new CrowdUserToken(Faces.getRequest(), Faces.getResponse(), userId, password, rememberMe);
+//        UsernamePasswordToken token = new UsernamePasswordToken(userId, password, rememberMe);
         try {
             loginService.authenticate(token);
             Subject currentUser = SecurityUtils.getSubject();

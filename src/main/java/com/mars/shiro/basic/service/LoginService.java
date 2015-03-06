@@ -3,9 +3,9 @@ package com.mars.shiro.basic.service;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 
 import javax.ejb.Stateless;
@@ -17,7 +17,7 @@ import javax.ejb.Stateless;
 @Stateless
 public class LoginService {
 
-    public void authenticate(UsernamePasswordToken token) throws AuthenticationException {
+    public void authenticate(AuthenticationToken token) throws AuthenticationException {
         Subject currentUser = SecurityUtils.getSubject();
         try {
             currentUser.login(token);
