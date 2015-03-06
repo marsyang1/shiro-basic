@@ -1,11 +1,10 @@
 package com.cy.security.crowd;
 
+import com.atlassian.crowd.exception.*;
 import com.atlassian.crowd.integration.http.CrowdHttpAuthenticator;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.pam.UnsupportedTokenException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -17,9 +16,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 @Slf4j
 public class CrowdRealm extends AuthorizingRealm {
 
-    private SecurityServerClient crowdClient;
-    private CrowdHttpAuthenticator crowdHttpAuthenticator;
-
+    private CrowdHttpAuthenticator crowdHttpClient;
 
     public CrowdRealm() {
         super();
@@ -27,18 +24,35 @@ public class CrowdRealm extends AuthorizingRealm {
     }
 
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        if (token instanceof CrowdUserToken) {
-            CrowdUserToken authcToken = (CrowdUserToken) token;
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+        if(authenticationToken ==null){
+            throw new CrowdAuthenticationException("token is null");
         }
-        String userId = token.getPrincipal().toString();
+        if (!(authenticationToken instanceof CrowdUserToken)) {
+            throw new UnsupportedTokenException("Unsupported token of type " + authenticationToken.getClass().getName() + ".  "
+                    + UsernamePasswordToken.class.getName() + " is required.");
+        } else {
+            CrowdUserToken token = (CrowdUserToken) authenticationToken;
+            try {
+                crowdHttpClient.authenticate(token.getRequest(), token.getResponse(), token.getUserId(), String.valueOf(token.getPassword()));
+                return new SimpleAuthenticationInfo(token.getPrincipal(), token.getCredentials(), getName());
+            } catch (ApplicationAccessDeniedException aade) {
+                throw new AuthenticationException("Unable to obtain authenticate principal " + token.getUserId() + " in Crowd.", aade);
+            } catch (InvalidAuthenticationException iae) {
+                throw new IncorrectCredentialsException("Unable to authenticate principal " + token.getUserId() + " in Crowd.", iae);
+            } catch (InactiveAccountException iae) {
+                throw new DisabledAccountException("Disabled principal " + token.getUserId() + " in Crowd.", iae);
+            } catch (InvalidTokenException e) {
+                throw new CrowdAuthenticationException("InvalidTokenException ", e);
+            } catch (ExpiredCredentialException e) {
+                throw new CrowdAuthenticationException(" ExpiredCredentialException ", e);
+            } catch (OperationFailedException e) {
+                throw new CrowdAuthenticationException(" OperationFailedException ", e);
+            } catch (ApplicationPermissionException e) {
+                throw new CrowdAuthenticationException(" ApplicationPermissionException ", e);
+            }
+        }
 
-        if (userId == null) {
-            log.warn("UserId is null.");
-            return null;
-        }
-        String passwordSalt = getPassword();
-        return new SimpleAuthenticationInfo(userId, passwordSalt, getName());
     }
 
     @Override

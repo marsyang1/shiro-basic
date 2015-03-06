@@ -80,6 +80,22 @@ public class CrowdUserToken implements HostAuthenticationToken, RememberMeAuthen
         this.rememberMe = rememberMe;
     }
 
+    public HttpServletRequest getRequest() {
+        return request;
+    }
+
+    public HttpServletResponse getResponse() {
+        return response;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public char[] getPassword() {
+        return password;
+    }
+
     @Override
     public String getHost() {
         return host;
