@@ -2,6 +2,16 @@ package com.cy.security.crowd;
 
 import com.atlassian.crowd.exception.*;
 import com.atlassian.crowd.integration.http.CrowdHttpAuthenticator;
+import com.atlassian.crowd.integration.http.CrowdHttpAuthenticatorImpl;
+import com.atlassian.crowd.integration.http.util.CrowdHttpTokenHelper;
+import com.atlassian.crowd.integration.http.util.CrowdHttpTokenHelperImpl;
+import com.atlassian.crowd.integration.http.util.CrowdHttpValidationFactorExtractorImpl;
+import com.atlassian.crowd.integration.rest.service.factory.RestCrowdClientFactory;
+import com.atlassian.crowd.service.client.ClientProperties;
+import com.atlassian.crowd.service.client.ClientPropertiesImpl;
+import com.atlassian.crowd.service.client.ClientResourceLocator;
+import com.atlassian.crowd.service.client.CrowdClient;
+import com.atlassian.crowd.service.factory.CrowdClientFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.pam.UnsupportedTokenException;
@@ -9,6 +19,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created by mars on 2015/3/6.
@@ -16,6 +27,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 @Slf4j
 public class CrowdRealm extends AuthorizingRealm {
 
+    @Autowired
     private CrowdHttpAuthenticator crowdHttpClient;
 
     public CrowdRealm() {
@@ -25,7 +37,8 @@ public class CrowdRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        if(authenticationToken ==null){
+        ensureAuthenticator();
+        if (authenticationToken == null) {
             throw new CrowdAuthenticationException("token is null");
         }
         if (!(authenticationToken instanceof CrowdUserToken)) {
@@ -122,7 +135,18 @@ public class CrowdRealm extends AuthorizingRealm {
         super.setAuthenticationTokenClass(CrowdUserToken.class);
     }
 
-    public String getPassword() {
-        return "1234";
+    private  void ensureAuthenticator() {
+        if (crowdHttpClient == null) {
+            log.debug("Enter create crowdHttpClient");
+            ClientResourceLocator clientResourceLocator = new ClientResourceLocator("crowd.properties");
+            ClientProperties props = ClientPropertiesImpl.newInstanceFromResourceLocator(clientResourceLocator);
+            CrowdClientFactory clientFactory = new RestCrowdClientFactory();
+            CrowdClient client = clientFactory.newInstance(props);
+            CrowdHttpTokenHelper tokenHelper = CrowdHttpTokenHelperImpl
+                    .getInstance(CrowdHttpValidationFactorExtractorImpl.getInstance());
+            crowdHttpClient = new CrowdHttpAuthenticatorImpl(client, props, tokenHelper);
+        }
     }
+
+
 }
